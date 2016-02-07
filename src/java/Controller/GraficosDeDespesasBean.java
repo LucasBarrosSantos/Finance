@@ -1,6 +1,5 @@
-package Graficos;
-
-import Controller.UsuarioMB;
+package Controller;
+/*
 import Dao.TitulosDaoImp;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
@@ -22,6 +21,8 @@ public class GraficosDeDespesasBean {
     private LineChartModel dateModel;
     private TitulosDaoImp daoImp;
 
+   
+
     public GraficosDeDespesasBean() throws Exception {
         createDateModel();
     }
@@ -31,8 +32,12 @@ public class GraficosDeDespesasBean {
     }
 
     private void createDateModel() throws Exception {
-        dateModel = new LineChartModel();
         daoImp = new TitulosDaoImp();
+        dateModel = new LineChartModel();
+        
+        daoImp.usuarioLogado(usuarioMB.usuarioDaSessao(),
+                usuarioMB.senhaUsuarioDaSessao());
+
 
         LineChartSeries entrada = new LineChartSeries();
         entrada.setLabel("Entrada");
@@ -83,3 +88,4 @@ public class GraficosDeDespesasBean {
         this.usuarioMB = usuarioMB;
     }
 }
+*/

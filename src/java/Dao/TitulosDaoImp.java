@@ -90,7 +90,7 @@ public class TitulosDaoImp implements TitulosDao {
     public List<Titulo> listarTodos() {
         EntityManager em = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
         try {
-            List<Usuario> usuariologado =  usuarioLogado(getNome(), getSenha());
+            List<Usuario> usuariologado = usuarioLogado(getNome(), getSenha());
         } catch (Exception ex) {
             Logger.getLogger(TitulosDaoImp.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -116,7 +116,7 @@ public class TitulosDaoImp implements TitulosDao {
         }
     }
 
-    public List<Titulo> mesesGraficos() throws Exception {
+    public List<Titulo> mesesGraficos() {
         List<Usuario> usuariologado = usuarioLogado(getNome(), getSenha());
         EntityManager em = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
         Query query = em.createQuery("select cast(t.datadoPagamento as date) from Titulo as t where t.tipo = 0 and t.datadoPagamento is not null AND t.valorPago IS NOT NULL AND t.criadoPor = :usuariologado");
@@ -124,7 +124,7 @@ public class TitulosDaoImp implements TitulosDao {
         return query.getResultList();
     }
 
-    public List<Titulo> valores() throws Exception {
+    public List<Titulo> valores() {
         List<Usuario> usuariologado = usuarioLogado(getNome(), getSenha());
         EntityManager em = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
         Query query = em.createQuery("select t.valorPago from Titulo as t where t.tipo = 0 and t.datadoPagamento is not null AND t.valorPago IS NOT NULL AND t.criadoPor = :usuariologado");
@@ -132,7 +132,7 @@ public class TitulosDaoImp implements TitulosDao {
         return query.getResultList();
     }
 
-    public List<Titulo> mesesGraficos_Saida() throws Exception {
+    public List<Titulo> mesesGraficos_Saida() {
         EntityManager em = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
         List<Usuario> usuariologado = usuarioLogado(getNome(), getSenha());
         Query query = em.createQuery("select cast(t.datadoPagamento as date) from Titulo as t where t.tipo = 1 and t.datadoPagamento is not null AND t.valorPago IS NOT NULL AND t.criadoPor = :usuariologado");
@@ -140,7 +140,7 @@ public class TitulosDaoImp implements TitulosDao {
         return query.getResultList();
     }
 
-    public List<Titulo> valores_Saida() throws Exception {
+    public List<Titulo> valores_Saida() {
         EntityManager em = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
         List<Usuario> usuariologado = usuarioLogado(getNome(), getSenha());
         Query query = em.createQuery("select t.valorPago from Titulo as t where t.tipo = 1 and t.datadoPagamento is not null AND t.valorPago IS NOT NULL AND t.criadoPor = :usuariologado");
@@ -218,6 +218,22 @@ public class TitulosDaoImp implements TitulosDao {
     public Object usuariosLogado() {
         EntityManager em = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
         Query query = em.createQuery("SELECT u FROM Usuario AS u WHERE u.isLogado = TRUE");
+        return query.getResultList();
+    }
+
+    public List<Titulo> graficoDeDespessas() {
+        EntityManager em = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
+        List<Usuario> usuariologado = usuarioLogado(getNome(), getSenha());
+        Query query = em.createQuery("select t from Titulo as t where t.criadoPor = :usuariologado group by t.entidadeId");
+        query.setParameter("usuariologado", getNome() + getSenha());
+        return query.getResultList();
+    }
+    
+     public List<Titulo> valoresGraficoDeDespessas() {
+        EntityManager em = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
+        List<Usuario> usuariologado = usuarioLogado(getNome(), getSenha());
+        Query query = em.createQuery("select sum(t.valor) from Titulos as t where t.criadoPor = :usuariologado group by t.entidadeId ");
+        query.setParameter("usuariologado", getNome() + getSenha());
         return query.getResultList();
     }
 }
