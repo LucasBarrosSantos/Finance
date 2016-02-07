@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    
+    <h:head>
+        <link rel="stylesheet" type="text/css" 
+              href="#{facesContext.externalContext.requestContextPath}/resources/css/estilo.css" media="screen" />
+
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+        <title>Novo Usuário</title>
+    </h:head>
+    <h:body>
+        <div id="login-dialog" class="login-center">
+            <h1>Novo Usuário</h1>
+            <h:form id="conteudo">
+                <p:growl id="msg" />
+                <h:panelGrid columns="2" class="grid-login">
+
+                    <p:outputLabel value="Usuário" for="usuario"/>
+                    <p:inputText id="usuario" size="20"
+                                 value="#{usuarioMB.usuario.nome}">
+                        <f:validateLength minimum="5" for="usuario"/>
+                    </p:inputText>
+
+                    <p:outputLabel value="Senha" for="senha"/>
+                    <p:password id="senha" size="20"
+                                value="#{usuarioMB.usuario.senha}"
+                                feedback="true"
+                                promptLabel="Digite sua senha" weakLabel="Fraca"
+                                goodLabel="Forte" strongLabel="Muito Forte"
+                                match="senha2"
+                                validatorMessage="As senhas não coincidem!">
+                        <f:validateLength minimum="6" for="senha"/>
+                    </p:password>
+
+                    <p:outputLabel value="Confirme" for="senha2"/>
+                    <p:password id="senha2" size="20"
+                                value="#{usuarioMB.usuario.senha}"
+                                feedback="true"
+                                promptLabel="Digite sua senha" weakLabel="Fraca"
+                                goodLabel="Forte" strongLabel="Muito Forte"
+                                validatorMessage="As senhas não coincidem!">
+                        <f:validateLength minimum="6" for="senha2"/>
+                    </p:password>
+
+                    <p:commandButton value="Salvar"                                     
+                                     icon="fa fa-save"
+                                     action="#{usuarioMB.add()}" 
+                                     update="conteudo msg"
+                                     id="salvar"/>
+
+                    <p:commandButton value="Voltar"
+                                     action="#{usuarioMB.voltar()}"
+                                     icon="fa fa-reply"/>
+
+                </h:panelGrid>
+            </h:form>
+        </div>
+
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" 
+                  closable="false" resizable="false" showHeader="false">
+            <p:graphicImage url="img/ajax-loader.gif"/>
+        </p:dialog>
+
+    </h:body>
+</html>

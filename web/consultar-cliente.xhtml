@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<ui:composition template="template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <f:metadata>
+        <f:viewAction action="#{entidadeMB.consultar()}"/>
+    </f:metadata>
+    <ui:define name="titulo">Consulta de Clientes</ui:define>
+    <ui:define name="corpo">
+
+        <h1>Consulta de Clientes</h1>
+
+        <h:form id="form">
+            <p:growl id="msg"/>
+            <p:dataTable value="#{entidadeMB.entidades}"
+                         var="cli" paginator="true" rows="8"
+                         paginatorPosition="bottom"
+                         id="entidades">
+
+                <p:column style="width: 04%" class="column-center">
+                    <f:facet name="header">
+                        <h:outputText value="#"/>
+                    </f:facet>
+                    <h:outputText value="#{cli.id}"/>
+                </p:column>
+
+                <p:column class="column-center"
+                           filterMatchMode="contains"
+                           filterBy="#{cli.nome}"
+                          filterStyle="width: 282px">
+                    <f:facet name="header">
+                        <h:outputText value="Nome"/>
+                    </f:facet>
+                    <h:outputText value="#{cli.nome}"/>
+                </p:column>
+
+                <p:column class="column-center" style="width: 13%">
+                    <f:facet name="header">
+                        <h:outputText value="Endereço"/>
+                    </f:facet>
+                    <h:outputText value="#{cli.endereco}"/>
+                </p:column>
+
+                <p:column class="column-center" style="width: 06.5%">
+                    <f:facet name="header">
+                        <h:outputText value="CEP"/>
+                    </f:facet>
+                    <h:outputText value="#{cli.cep}"/>
+                </p:column>
+
+                <p:column class="column-center">
+                    <f:facet name="header">
+                        <h:outputText value="Cidade"/>
+                    </f:facet>
+                    <h:outputText value="#{cli.cidade}"/>
+                </p:column>
+
+                <p:column class="column-center" style="width: 03%">
+                    <f:facet name="header">
+                        <h:outputText value="UF"/>
+                    </f:facet>
+                    <h:outputText value="#{cli.uf}">
+                    </h:outputText>
+                </p:column>
+
+                <p:column class="column-center" style="width: 10%">
+                    <f:facet name="header">
+                        <h:outputText value="Celular 1"/>
+                    </f:facet>
+                    <h:outputText value="#{cli.telefone1}">
+                    </h:outputText>
+                </p:column>
+
+                <p:column class="column-center" style="width: 10%">
+                    <f:facet name="header">
+                        <h:outputText value="Celular 2"/>
+                    </f:facet>
+                    <h:outputText value="#{cli.telefone2}">
+                    </h:outputText>
+                </p:column>
+
+                <p:column style="text-align: center; width: 7%">
+                    <f:facet name="header">
+                        <p:outputLabel value="Ações"/>
+                    </f:facet>
+
+                    <p:commandButton icon="fa fa-edit" title="Editar"
+                                     ajax="true" action="#{entidadeMB.updateCliente()}">
+                        <f:setPropertyActionListener value="#{cli}" target="#{entidadeMB.entidade}"/>
+                    </p:commandButton>
+
+                    <p:commandButton icon="fa fa-times" title="Excluir" process="@this"
+                                     update="@form :excluirEntidade" action="#{entidadeMB.remover()}">
+                        <p:confirm header="Excluir Cliente" message="Deseja realmente excluir?" 
+                                   icon="ui-icon-alert"/>
+                        <f:setPropertyActionListener value="#{cli}" target="#{entidadeMB.entidade}"/>
+                    </p:commandButton>
+
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+
+        <h:form id="excluirEntidade">
+
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+
+                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" 
+                                 icon="fa fa-check"
+                                 actionListener="#{entidadeMB.remover()}"
+                                 update="@form" process="@this">
+                    <f:setPropertyActionListener value="#{cli}"
+                                                 target="#{entidadeMB.entidade}"/>
+                </p:commandButton>
+
+                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" 
+                                 icon="fa fa-times"
+                                 update="@form" process="@this"/>
+            </p:confirmDialog>
+        </h:form>
+
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">    
+    <h:head>
+
+        <link rel="stylesheet" type="text/css" 
+              href="#{facesContext.externalContext.requestContextPath}/resources/css/estilo.css" media="screen" />
+
+        <script src="#{facesContext.externalContext.requestContextPath}/resources/js/calendar.js" 
+                type="text/javascript">
+        </script>
+
+        <title>
+            <ui:insert name="titulo">Sistema Financeiro</ui:insert>
+        </title>
+
+    </h:head>
+
+    <h:body>
+
+        <header>
+            <div id="logo" class="logo">
+                <!--<img src="../img/logo.png" alt=""/>-->
+                Controle Financeiro
+            </div>
+        </header>
+
+        <h:form>
+            <p:growl id="msg"/>
+            <p:menubar style="margin-top: -20px; margin-bottom: 20px">
+                <p:submenu label="Cadastrar" icon="fa fa-plus">
+                    <p:menuitem value="Lançamento"
+                                action="/form-novo-titulo?faces-redirect=true"
+                                update="@form"
+                                process="@this"
+                                actionListener="#{TitulosBean.clear()}"
+                                icon="fa fa-shopping-cart"/>
+
+                    <p:menuitem value="Cliente/Fornecedor"
+                                action="/form-novo-cliente?faces-redirect=true"
+                                update="@form"
+                                process="@this"
+                                actionListener="#{entidadeMB.clear()}"
+                                icon="fa fa-user"/>
+                </p:submenu>
+                <p:submenu label="Consultar" icon="fa fa-search">                    
+                    <p:menuitem value="Lançamentos"
+                                update="@form :relatorioModal"
+                                process="@this"
+                                action="/consultar-titulo?faces-redirect=true"
+                                icon="fa fa-shopping-cart"/>
+
+                    <p:menuitem value="Clientes"
+                                action="/consultar-cliente?faces-redirect=true"
+                                icon="fa fa-user"
+                                update="@form :relatorioModal"
+                                process="@this"/>
+
+                    <p:menuitem value="Relatório"
+                                icon="fa fa-file-word-o"
+                                disabled="#{TitulosBean.saldo() == 0 or TitulosBean.saldo() == null}"
+                                oncomplete="PF('dlgRelatorio').show()"
+                                update="@form :relatorioModal"
+                                process="@this"/>
+
+                    <p:menuitem value="Eventos"
+                                icon="fa fa-calendar"
+                                update="@form"
+                                process="@this"
+                                action="/evento?faces-redirect=true"/>
+                    
+                    
+                </p:submenu>
+
+
+                <p:menuitem value="Contato"
+                            action="/form-contato?faces-redirect=true"
+                            icon="fa fa-envelope"
+                            title="Instagram"/>
+
+                <p:menuitem url="https://github.com/lucasbarrossantos/" target="_blank"
+                            icon="fa fa-github"
+                            title="Github"/>
+
+                <p:menuitem url="https://www.facebook.com/lucas.barrossa" target="_blank"
+                            icon="fa fa-facebook-official"
+                            title="Facebook"/>
+
+                <p:menuitem url="https://www.instagram.com/lucasbssa/" target="_blank"
+                            icon="fa fa-instagram"
+                            title="Instagram"/> 
+
+                <p:menuitem value="(87)9 9642-1975" target="_blank"
+                            icon="fa fa-whatsapp"
+                            title="Whatsapp"/> 
+
+            </p:menubar>
+            <div class="usuario">
+                <h4>#{usuarioMB.usuarioLogado()} -  
+                    <p:commandLink value="Sair"
+                                   action="#{usuarioMB.inicio()}"/> 
+                </h4>
+            </div>
+        </h:form>
+
+        <div id="conteudo">
+            <ui:insert name="corpo"/>
+        </div>
+
+        <p:dialog header="Relatório Financeiro" 
+                  widgetVar="dlgRelatorio" 
+                  modal="true" 
+                  showEffect="explode" 
+                  hideEffect="bounce"
+                  resizable="false"
+                  style="text-align: center"
+                  class="column-center">
+
+            <p:outputPanel id="relatorioModal" >
+                <p:panelGrid  columns="2"  
+                              columnClasses="label,value"
+                              rendered="#{not empty TitulosBean.titulo}" >                    
+
+                    <h:outputText value="Total de Entradas"/>
+                    <h:outputText value="#{TitulosBean.saldo()}" id="numero">
+                        <f:convertNumber  for="numero" type="currency"/>
+                    </h:outputText>
+
+                    <h:outputText value="Total de Saída"/>
+                    <h:outputText value="#{TitulosBean.saldoDevedor()}" id="totaoSaida">
+                        <f:convertNumber type="currency" 
+                                         for="totaoSaida"/>
+                    </h:outputText>
+
+                    <h:outputText value="Saldo Disponível" 
+                                  rendered="#{TitulosBean.liquido()>=0}"/>
+
+                    <h:outputText value="Saldo Devedor" 
+                                  rendered="#{TitulosBean.totalSaidas()}"/>
+
+                    <h:outputText value="#{TitulosBean.liquido()}"
+                                  rendered="#{TitulosBean.liquido()>=0}"
+                                  style="color: #0073ea"
+                                  id="num">
+                        <f:convertNumber type="currency" for="numero"/>
+                    </h:outputText>
+
+                    <h:outputText value="#{TitulosBean.liquido()*-1}"
+                                  rendered="#{TitulosBean.totalSaidas()}"
+                                  style="color: crimson" id="liquido">
+                        <f:convertNumber  for="liquido" type="currency"/>
+                    </h:outputText>
+
+                </p:panelGrid>
+            </p:outputPanel>
+        </p:dialog>
+
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" closable="false" resizable="false" showHeader="false">
+            <p:graphicImage url="../Finance/img/ajax-loader.gif" />
+        </p:dialog>
+
+        <footer class="footer">
+
+            <div class="copy">
+                <h3>© 2016 - Sistema Financeiro - Lucas Barros</h3>
+            </div>
+
+        </footer>
+    </h:body>
+</html>

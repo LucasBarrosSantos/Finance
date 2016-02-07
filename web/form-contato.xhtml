@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html>
+<ui:composition template="template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+    <f:metadata>
+        <f:viewAction action="#{contatoMB.preCadastro()}"/> 
+    </f:metadata>
+    <ui:define name="titulo">Contato</ui:define>
+    <ui:define name="corpo">
+        <h1>Entre em Contato</h1>
+        <h:form id="formContato">
+            <p:growl id="msg" autoUpdate="true"/>
+            <p:panelGrid columns="2">
+
+                <p:outputLabel value="Nome" for="nome"/>
+                <p:inputText id="nome" value="#{contatoMB.contato.nome}" required="true"
+                             placeholder="Nome"
+                             validatorMessage="O valor informado não obedece ao padrão definido!">
+                </p:inputText>
+
+                <p:outputLabel value="E-mail" for="email"/>
+                <p:inputText id="email" value="#{contatoMB.contato.email}" rendered="true"
+                             required="true" size="50"
+                             placeholder="E-mail">
+                    <f:validator  validatorId="custom.emailValidator"/>
+                </p:inputText>
+
+
+                <h:outputText value="Assunto" />
+                <p:inputText id="assunto" value="#{contatoMB.contato.assunto}"
+                             required="true"
+                             size="50"
+                             placeholder="Assunto"
+                             validatorMessage="O valor informado não obedece ao padrão definido!">
+                </p:inputText>
+
+                <h:outputText value="Telefone" />
+                <p:inputMask mask="(99)9-9999-9999" id="fone"
+                             value="#{contatoMB.contato.telefone}"
+                             placeholder="Telefone para Contato"/>
+
+                <h:outputText value="Mensagem" />
+                <p:inputTextarea  value="#{contatoMB.contato.mensagem}"
+                                  required="true"
+                                  placeholder="Digite sua mensagem"
+                                  validatorMessage="O valor informado não obedece ao padrão definido!">
+                </p:inputTextarea>                          
+
+                <p:commandButton value="Enviar"
+                                 actionListener="#{contatoMB.sendEmail()}"
+                                 action="/form-contato?faces-redirect=true"
+                                 update="msg formContato"
+                                 icon="fa fa-send"/>
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+</ui:composition>

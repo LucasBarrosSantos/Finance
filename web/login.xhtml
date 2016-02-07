@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+
+        <link rel="stylesheet" type="text/css" 
+              href="#{facesContext.externalContext.requestContextPath}/resources/css/estilo.css" media="screen" />
+
+        <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet"/>
+        <title>Login</title>
+    </h:head>
+    <h:body>
+        <div id="login-dialog" class="login-center">
+            <h1>Login</h1>
+            <h:form id="conteudo">
+                <p:growl id="msg"/>
+                <h:panelGrid columns="2" class="grid-login">
+                    <p:outputLabel value="Usuário" for="usuario"/>
+                    <p:inputText id="usuario" size="20"
+                                 value="#{usuarioMB.usuario.nome}" />
+
+                    <p:outputLabel value="Senha" for="senha"/>
+                    <p:password id="senha" size="20"
+                                value="#{usuarioMB.usuario.senha}"/>
+
+                    <p:commandButton value="Entrar"
+                                     action="#{usuarioMB.login()}" 
+                                     id="entrar"
+                                     update="conteudo msg"/>
+
+                    <p:commandButton value="Cadastrar"
+                                     action="#{usuarioMB.novoUsuario()}"
+                                     id="lu"
+                                     icon="fa fa-user"/>
+
+                    <p:watermark for="senha" value="Senha" />
+                    <p:watermark for="usuario" value="Usuário" />
+                </h:panelGrid>
+            </h:form>
+        </div>
+
+        <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide()" />
+
+        <p:dialog widgetVar="statusDialog" modal="true" draggable="false" 
+                  closable="false" resizable="false" showHeader="false">
+            <p:graphicImage url="img/ajax-loader.gif"/>
+        </p:dialog>
+
+    </h:body>
+</html>

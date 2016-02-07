@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<ui:composition template="template/layout.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:o="http://omnifaces.org/ui">
+    <f:metadata>
+        <f:viewAction action="#{TitulosBean.consultar()}"/>
+    </f:metadata>
+    <ui:define name="titulo">Consulta de Títulos</ui:define>
+    <ui:define name="corpo">
+
+        <h1>Consulta de Títulos</h1>
+
+        <h:form id="form">
+            <p:growl id="msg" autoUpdate="true"/>
+            <p:dataTable value="#{TitulosBean.titulos}"
+                         var="t" paginator="true" rows="10"
+                         paginatorPosition="bottom"
+                         id="titulos">
+
+                <p:column style="width: 03%" class="column-center">
+                    <f:facet name="header">
+                        <h:outputText value="#"/>
+                    </f:facet>
+                    <h:outputText value="#{t.id}"/>
+                </p:column>
+
+                <p:column class="column-center" 
+                          filterBy="#{t.descricao}" 
+                          filterMatchMode="contains"
+                          filterStyle="width: 342px">
+                    <f:facet name="header">
+                        <h:outputText value="Descrição"/>
+                    </f:facet>
+                    <h:outputText value="#{t.descricao}"/>
+                </p:column>
+
+                <p:column class="column-center" style="width: 05%">
+                    <f:facet name="header">
+                        <h:outputText value="Tipo"/>
+                    </f:facet>
+
+                    <h:outputText value="Entrada" rendered="#{t.tipo==0}"/>
+                    <h:outputText value="Saída" rendered="#{t.tipo==1}"/>
+                </p:column>
+
+                <p:column class="column-center" style="width: 5.5%">
+                    <f:facet name="header">
+                        <h:outputText value="Situação"/>
+                    </f:facet>                        
+                    <p:commandButton title="Quitado! Clique para ver detalhes."
+                                     icon="fa fa-thumbs-o-up" 
+                                     rendered="#{t.situacao==1}"
+                                     style="color: blue"
+                                     update=":tituloDetails"
+                                     process="@this"
+                                     ajax="true"
+                                     oncomplete="PF('dlgTitulo').show()">
+
+                        <f:setPropertyActionListener value="#{t}" target="#{TitulosBean.titulo}"
+                                                     rendered="true"/>
+                    </p:commandButton>
+
+
+                    <p:commandButton title="Aberto! Clique para Quitar"
+                                     icon="fa fa-thumbs-o-down" 
+                                     action="#{TitulosBean.updateTitulo()}"
+                                     rendered="#{t.situacao==0}"
+                                     style="color: brown"
+                                     update=":relatorioModal @form"
+                                     process="@this">
+                        <f:setPropertyActionListener value="#{t}" target="#{TitulosBean.titulo}"/>
+                    </p:commandButton>
+                </p:column>
+
+                <p:column class="column-center" style="width: 07%">
+                    <f:facet name="header">
+                        <h:outputText value="Valor"/>
+                    </f:facet>
+                    <h:outputText value="#{t.valor}">
+                        <f:convertNumber type="currency"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column class="column-center" style="width: 07%">
+                    <f:facet name="header">
+                        <h:outputText value="Valor Pago"/>
+                    </f:facet>
+                    <h:outputText value="#{t.valorPago}">
+                        <f:convertNumber type="currency"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column class="column-center" style="width: 07%">
+                    <f:facet name="header">
+                        <h:outputText value="Emissão"/>
+                    </f:facet>
+                    <h:outputText value="#{t.datadeEmissao}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column class="column-center" style="width: 07%">
+                    <f:facet name="header">
+                        <h:outputText value="Vencimento"/>
+                    </f:facet>
+                    <h:outputText value="#{t.datadeValidade}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column class="column-center" style="width: 07%">
+                    <f:facet name="header">
+                        <h:outputText value="Pagamento"/>
+                    </f:facet>
+                    <h:outputText value="#{t.datadoPagamento}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column class="column-center" style="width: 16%"
+                          filterMatchMode="contains"
+                          filterBy="#{t.entidadeId.nome}"
+                          filterStyle="width: 182px">
+                    
+                    <f:facet name="header">
+                        <h:outputText value="Cliente/Fornecedor"/>
+                    </f:facet>
+                    <h:outputText value="#{t.entidadeId.nome}">
+                    </h:outputText>
+                </p:column>
+
+                <p:column style="width: 07%" class="column-center">
+
+                    <f:facet name="header">
+                        <p:outputLabel value="Ações"/>
+                    </f:facet>
+
+                    <p:commandButton icon="fa fa-edit" title="Editar"
+                                     ajax="true"
+                                     action="#{TitulosBean.updateTitulo()}"
+                                     rendered="true">
+
+                        <f:setPropertyActionListener value="#{t}" target="#{TitulosBean.titulo}"/>
+                    </p:commandButton>
+
+                    <p:commandButton icon="fa fa-times" title="Excluir" 
+                                     update="@form :ExcluirTitulo"
+                                     process="@this"
+
+                                     oncomplete="PF('dlgExcluir').show()">
+
+                        <f:setPropertyActionListener value="#{t}" target="#{TitulosBean.titulo}"/>
+                    </p:commandButton>
+                </p:column>
+
+                <f:facet name="footer">
+                    <h:outputText value="Total de Títulos #{TitulosBean.titulos.size()}" 
+                                  style="color: #0073ea"/> 
+                </f:facet>
+            </p:dataTable>
+        </h:form>
+
+        <p></p>
+
+        <p:dialog header="Informações do Título"  
+                  widgetVar="dlgTitulo" 
+                  modal="true" 
+                  showEffect="explode" 
+                  hideEffect="bounce"
+                  resizable="false">
+
+            <p:outputPanel id="tituloDetails" >
+                <p:panelGrid  columns="2" rendered="#{not empty TitulosBean.titulo }" columnClasses="label,value">
+
+                    <h:outputText value="#:" />
+                    <h:outputText value="#{TitulosBean.titulo.id}" />
+
+                    <h:outputText value="Descrição" />
+                    <h:outputText value="#{TitulosBean.titulo.descricao}" />
+
+                    <h:outputText value="Emissão" />
+                    <h:outputText value="#{TitulosBean.titulo.datadeEmissao}">
+                        <f:convertDateTime locale="pt_BR"/>
+                    </h:outputText>
+
+                    <h:outputText value="Pagamento" />
+                    <h:outputText value="#{TitulosBean.titulo.datadoPagamento}">
+                        <f:convertDateTime locale="pt_BR"/>
+                    </h:outputText>
+
+                    <h:outputText value="Valor" />
+                    <h:outputText value="#{TitulosBean.titulo.valor}">
+                        <f:convertNumber type="currency"/>
+                    </h:outputText>
+
+                    <h:outputText value="Valor Pago" />
+                    <h:outputText value="#{TitulosBean.titulo.valorPago}">
+                        <f:convertNumber type="currency"/>
+                    </h:outputText>
+
+                    <h:outputText value="Cliente/Fornecedor" />
+                    <h:outputText value="#{TitulosBean.titulo.entidadeId.nome}" />     
+
+                    <h:outputText value="Situação" />
+                    <h:form>
+                        <p:commandButton icon="fa fa-thumbs-o-up" 
+                                         title="Título Quitado!">
+                        </p:commandButton>
+                    </h:form>
+                </p:panelGrid>
+            </p:outputPanel>
+        </p:dialog>
+
+        <p:dialog header="Excluir Título" 
+                  widgetVar="dlgExcluir" 
+                  modal="true" 
+                  showEffect="explode" 
+                  hideEffect="bounce"
+                  resizable="false">
+
+            <p:outputPanel id="ExcluirTitulo" >
+                <p:panelGrid  columns="2" rendered="#{not empty TitulosBean.titulo }" 
+                              columnClasses="label,value">
+
+                    <h:outputText value="#:" />
+                    <h:outputText value="#{TitulosBean.titulo.id}" />
+
+                    <h:outputText value="Descrição" />
+                    <h:outputText value="#{TitulosBean.titulo.descricao}" />
+
+                    <h:outputText value="Emissão" />
+                    <h:outputText value="#{TitulosBean.titulo.datadeEmissao}">
+                        <f:convertDateTime locale="pt_BR"/>
+                    </h:outputText>
+
+                    <h:outputText value="Vencimento" />
+                    <h:outputText value="#{TitulosBean.titulo.datadeValidade}">
+                        <f:convertDateTime locale="pt_BR"/>
+                    </h:outputText>
+
+                    <h:outputText value="Pagamento" />
+                    <h:outputText value="#{TitulosBean.titulo.datadoPagamento}">
+                        <f:convertDateTime locale="pt_BR"/>
+                    </h:outputText>
+
+                    <h:outputText value="Valor" />
+                    <h:outputText value="#{TitulosBean.titulo.valor}">
+                        <f:convertNumber type="currency"/>
+                    </h:outputText>
+
+                    <h:outputText value="Valor Pago" />
+                    <h:outputText value="#{TitulosBean.titulo.valorPago}">
+                        <f:convertNumber type="currency"/>
+                    </h:outputText>
+
+
+                    <h:outputText value="Cliente/Fornecedor" />
+                    <h:outputText value="#{TitulosBean.titulo.entidadeId.nome}" />
+
+                    <h:form>
+                        <p:commandButton icon="fa fa-thumbs-o-up" 
+                                         title="Título Quitado!"
+                                         rendered="#{TitulosBean.titulo.situacao==1}"
+                                         update=":form">
+                        </p:commandButton>
+
+                        <p:commandButton icon="fa fa-thumbs-o-down" 
+                                         title="Aberto!"
+                                         rendered="#{TitulosBean.titulo.situacao==0}"
+                                         update=":form"
+                                         style="color: firebrick">
+                        </p:commandButton>
+                    </h:form>
+
+                    <h:form>
+                        <p:commandButton value="Exluir"
+                                         icon="fa fa-times"
+                                         actionListener="#{TitulosBean.remover()}"
+                                         update=":form"
+                                         action="/consultar-titulo?faces-redirect=true">
+                        </p:commandButton>
+                    </h:form>
+
+                </p:panelGrid>
+            </p:outputPanel>
+        </p:dialog>
+
+<!-- <p:chart type="line" model="#{graficosDeDespesasBean.dateModel}" style="height:310px;"/> -->
+
+    </ui:define>
+</ui:composition>
