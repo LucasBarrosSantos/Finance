@@ -179,10 +179,7 @@ public class Titulo implements Serializable {
             return false;
         }
         Titulo other = (Titulo) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return !((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id)));
     }
 
     @Override

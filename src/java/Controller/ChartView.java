@@ -38,8 +38,10 @@ public class ChartView {
 
         dao.usuarioLogado(usuarioMB.usuarioDaSessao(), usuarioMB.senhaUsuarioDaSessao());
 
-        for (Titulo t : dao.graficoDeDespessas()) {
-             pieModel1.set(t.getEntidadeId().getNome(), t.getValor());   
+        for (Object ti : dao.valoresGraficoDeDespessas()) {
+            for (Titulo t : dao.graficoDeDespessas()) {
+                pieModel1.set(t.getEntidadeId().getNome(), (Number) ti);
+            }
         }
 
         pieModel1.setTitle("Gráfico de Despesa");

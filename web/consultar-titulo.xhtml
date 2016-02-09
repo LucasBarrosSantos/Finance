@@ -76,7 +76,7 @@
                     </p:commandButton>
                 </p:column>
 
-                <p:column class="column-center" style="width: 07%">
+                <p:column class="column-center" style="width: 08%">
                     <f:facet name="header">
                         <h:outputText value="Valor"/>
                     </f:facet>
@@ -85,7 +85,7 @@
                     </h:outputText>
                 </p:column>
 
-                <p:column class="column-center" style="width: 07%">
+                <p:column class="column-center" style="width: 08%">
                     <f:facet name="header">
                         <h:outputText value="Valor Pago"/>
                     </f:facet>
@@ -150,9 +150,7 @@
                     </p:commandButton>
 
                     <p:commandButton icon="fa fa-times" title="Excluir" 
-                                     update="@form :ExcluirTitulo"
-                                     process="@this"
-
+                                     update=":ExcluirTitulo"
                                      oncomplete="PF('dlgExcluir').show()">
 
                         <f:setPropertyActionListener value="#{t}" target="#{TitulosBean.titulo}"/>
@@ -282,7 +280,7 @@
                         <p:commandButton value="Exluir"
                                          icon="fa fa-times"
                                          actionListener="#{TitulosBean.remover()}"
-                                         update=":form"
+                                         update=":form:titulos"
                                          action="/consultar-titulo?faces-redirect=true">
                         </p:commandButton>
                     </h:form>
@@ -290,20 +288,20 @@
                 </p:panelGrid>
             </p:outputPanel>
         </p:dialog>
-        <!--
-        <h:form id="grafico">
+
+        <!--<h:form id="grafico">
             <p:growl id="growl" showDetail="true" />
-            
-            <p:chart type="line" model="#{graficosDeDespesasBean.dateModel}" style="height:310px;" 
-                     widgetVar="graf"/>
+
+<p:chart type="line" model="#{graficosDeDespesasBean.dateModel}" style="height:310px;" 
+         widgetVar="graf"/>
 
             <h:panelGrid columns="2" columnClasses="left,right" style="width:100%">
                 <p:chart type="pie" model="#{chartView.pieModel1}" style="width:500px;height:300px">
                     <p:ajax event="itemSelect" listener="#{chartView.itemSelect}" update="growl"/>
                 </p:chart>
             </h:panelGrid>
-            
-        </h:form>
-        -->
+
+        </h:form> -->
+
     </ui:define>
 </ui:composition>

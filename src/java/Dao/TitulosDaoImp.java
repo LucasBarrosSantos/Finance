@@ -228,11 +228,10 @@ public class TitulosDaoImp implements TitulosDao {
         query.setParameter("usuariologado", getNome() + getSenha());
         return query.getResultList();
     }
-    
-     public List<Titulo> valoresGraficoDeDespessas() {
+
+    public List<Titulo> valoresGraficoDeDespessas() {
         EntityManager em = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
-        List<Usuario> usuariologado = usuarioLogado(getNome(), getSenha());
-        Query query = em.createQuery("select sum(t.valor) from Titulos as t where t.criadoPor = :usuariologado group by t.entidadeId ");
+        Query query = em.createQuery("select sum(t.valor) from Titulo as t where t.criadoPor = :usuariologado group by t.entidadeId");
         query.setParameter("usuariologado", getNome() + getSenha());
         return query.getResultList();
     }

@@ -118,10 +118,11 @@ public class EntidadeMB {
     private Entidade getInstancia() {
         return new Entidade();
     }
-
+    
+    /*
     public List<String> complete(String input) {
         return new EntidadesDaoImp().clientesQueContem(input);
-    }
+    } */
 
     public void consultar() {
         entidades = getEntidades();

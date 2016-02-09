@@ -79,7 +79,6 @@ public class EventoMB {
 
     public void addEvent(ActionEvent actionEvent) {
         if (event.getId() == null) {
-            eventModel.addEvent(event);
 
             dao = new EventosDaoImp();
             evento = new Evento();
@@ -91,9 +90,9 @@ public class EventoMB {
             evento.setDescricao(event.getTitle());
             evento.setCriadoPor(usuarioMB.usuarioDaSessao() + usuarioMB.senhaUsuarioDaSessao());
 
+            eventModel.addEvent(event);
             dao.adicionar(evento);
         } else {
-            eventModel.updateEvent(event);
 
             dao = new EventosDaoImp();
             evento = new Evento();
@@ -113,6 +112,7 @@ public class EventoMB {
             evento.setDescricao(event.getTitle());
             evento.setCriadoPor(usuarioMB.usuarioDaSessao() + usuarioMB.senhaUsuarioDaSessao());
 
+            eventModel.updateEvent(event);
             dao.atualizar(evento);
         }
 

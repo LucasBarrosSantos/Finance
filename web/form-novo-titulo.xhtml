@@ -92,14 +92,7 @@
                                    itemLabel="#{ent.nome}"
                                    itemValue="#{ent}"/>
                 </p:selectOneMenu>
-
-                <p:outputLabel value="Cliente Cadastrados" for="cliente"/>
-                <p:autoComplete id="cliente" size="60"
-                                value="#{entidadeMB.entidade.nome}"
-                                completeMethod="#{entidadeMB.complete}"
-                                validatorMessage="O valor informado não obedece ao padrão definido!">
-                </p:autoComplete>
-
+                
                 <p:commandButton value="Salvar"
                                  action="#{TitulosBean.add()}"
                                  update="msg formNovoTitulo"
