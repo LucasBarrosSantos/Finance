@@ -59,7 +59,7 @@ public class ContatoMB {
             //Quando a porta utilizada não é a padrão (gmail = 465)
             email.setSmtpPort(465);
             //Adicione os destinatários
-            email.addTo("lucas-barros28@hotmail.com", "Lucas Barros");
+            email.addTo("nomedominio@hotmail.com", "Lucas Barros");
             email.addCc(contato.getEmail());
             //Configure o seu email do qual enviará
             email.setFrom(new InternetAddress(contato.getEmail(), contato.getNome()).toString());
@@ -74,7 +74,7 @@ public class ContatoMB {
             }
             //Para autenticar no servidor é necessário chamar os dois métodos abaixo
             email.setSSL(true);
-            email.setAuthentication("lucas14081992@gmail.com", "otimize@123");
+            email.setAuthentication("nomedominio@gmail.com", "senha");
             email.send();
             System.out.println("Email enviado!");
 
