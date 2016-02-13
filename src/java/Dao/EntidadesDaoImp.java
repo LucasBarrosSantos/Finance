@@ -83,7 +83,6 @@ public class EntidadesDaoImp implements EntidadesDao {
     @Override
     public List<Entidade> listarTodos() {
         EntityManager em = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
-        List<Usuario> usuariologado = usuarioLogado(getNome(), getSenha());
         Query query = em.createQuery("SELECT e FROM Entidade AS e WHERE e.criadoPor = :usuariologado");
         query.setParameter("usuariologado", getNome()+getSenha());
         return query.getResultList();

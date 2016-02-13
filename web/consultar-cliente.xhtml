@@ -28,16 +28,17 @@
                 </p:column>
 
                 <p:column class="column-center"
-                           filterMatchMode="contains"
-                           filterBy="#{cli.nome}"
-                          filterStyle="width: 282px">
+                          filterMatchMode="contains"
+                          filterBy="#{cli.nome}"
+                          filterStyle="width: 250px"
+                          style="width: 19%">
                     <f:facet name="header">
                         <h:outputText value="Nome"/>
                     </f:facet>
                     <h:outputText value="#{cli.nome}"/>
                 </p:column>
 
-                <p:column class="column-center" style="width: 13%">
+                <p:column class="column-center" style="width: 15%">
                     <f:facet name="header">
                         <h:outputText value="Endereço"/>
                     </f:facet>
@@ -51,7 +52,7 @@
                     <h:outputText value="#{cli.cep}"/>
                 </p:column>
 
-                <p:column class="column-center">
+                <p:column class="column-center" style="width: 15%">
                     <f:facet name="header">
                         <h:outputText value="Cidade"/>
                     </f:facet>
@@ -88,11 +89,13 @@
                     </f:facet>
 
                     <p:commandButton icon="fa fa-edit" title="Editar"
+                                     style="color: blue"
                                      ajax="true" action="#{entidadeMB.updateCliente()}">
                         <f:setPropertyActionListener value="#{cli}" target="#{entidadeMB.entidade}"/>
                     </p:commandButton>
 
                     <p:commandButton icon="fa fa-times" title="Excluir" process="@this"
+                                     style="color: brown"
                                      update="@form :excluirEntidade" action="#{entidadeMB.remover()}">
                         <p:confirm header="Excluir Cliente" message="Deseja realmente excluir?" 
                                    icon="ui-icon-alert"/>
@@ -100,6 +103,11 @@
                     </p:commandButton>
 
                 </p:column>
+
+                <f:facet name="footer">
+                    <h:outputText value="Total de Clientes #{entidadeMB.entidades.size()}" 
+                                  style="color: floralwhite"/> 
+                </f:facet>
 
             </p:dataTable>
 

@@ -141,6 +141,7 @@
 
                     <p:commandButton icon="fa fa-edit" title="Editar"
                                      ajax="true"
+                                     style="color: blue"
                                      action="#{TitulosBean.updateTitulo()}"
                                      rendered="true"
                                      update="@form"
@@ -151,7 +152,8 @@
 
                     <p:commandButton icon="fa fa-times" title="Excluir" 
                                      update=":ExcluirTitulo"
-                                     oncomplete="PF('dlgExcluir').show()">
+                                     oncomplete="PF('dlgExcluir').show()"
+                                     style="color: brown">
 
                         <f:setPropertyActionListener value="#{t}" target="#{TitulosBean.titulo}"/>
                     </p:commandButton>
@@ -159,7 +161,7 @@
 
                 <f:facet name="footer">
                     <h:outputText value="Total de Títulos #{TitulosBean.titulos.size()}" 
-                                  style="color: #0073ea"/> 
+                                  style="color: floralwhite"/> 
                 </f:facet>
             </p:dataTable>
         </h:form>
@@ -292,7 +294,7 @@
         <!--<h:form id="grafico">
             <p:growl id="growl" showDetail="true" />
 
-<p:chart type="line" model="#{graficosDeDespesasBean.dateModel}" style="height:310px;" 
+         <p:chart type="line" model="#{graficosDeDespesasBean.dateModel}" style="height:310px;" 
          widgetVar="graf"/>
 
             <h:panelGrid columns="2" columnClasses="left,right" style="width:100%">

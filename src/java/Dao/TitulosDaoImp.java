@@ -9,8 +9,6 @@ import ConexaoPU.PersistenceManager;
 import java.util.Date;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import Model.Titulo;
@@ -89,11 +87,6 @@ public class TitulosDaoImp implements TitulosDao {
     @Override
     public List<Titulo> listarTodos() {
         EntityManager em = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
-        try {
-            List<Usuario> usuariologado = usuarioLogado(getNome(), getSenha());
-        } catch (Exception ex) {
-            Logger.getLogger(TitulosDaoImp.class.getName()).log(Level.SEVERE, null, ex);
-        }
         Query query = em.createQuery("SELECT t FROM Titulo AS t WHERE t.criadoPor = :usuariologado");
         query.setParameter("usuariologado", getNome() + getSenha());
         return query.getResultList();
@@ -117,7 +110,6 @@ public class TitulosDaoImp implements TitulosDao {
     }
 
     public List<Titulo> mesesGraficos() {
-        List<Usuario> usuariologado = usuarioLogado(getNome(), getSenha());
         EntityManager em = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
         Query query = em.createQuery("select cast(t.datadoPagamento as date) from Titulo as t where t.tipo = 0 and t.datadoPagamento is not null AND t.valorPago IS NOT NULL AND t.criadoPor = :usuariologado");
         query.setParameter("usuariologado", getNome() + getSenha());
@@ -125,7 +117,6 @@ public class TitulosDaoImp implements TitulosDao {
     }
 
     public List<Titulo> valores() {
-        List<Usuario> usuariologado = usuarioLogado(getNome(), getSenha());
         EntityManager em = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
         Query query = em.createQuery("select t.valorPago from Titulo as t where t.tipo = 0 and t.datadoPagamento is not null AND t.valorPago IS NOT NULL AND t.criadoPor = :usuariologado");
         query.setParameter("usuariologado", getNome() + getSenha());
@@ -134,7 +125,6 @@ public class TitulosDaoImp implements TitulosDao {
 
     public List<Titulo> mesesGraficos_Saida() {
         EntityManager em = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
-        List<Usuario> usuariologado = usuarioLogado(getNome(), getSenha());
         Query query = em.createQuery("select cast(t.datadoPagamento as date) from Titulo as t where t.tipo = 1 and t.datadoPagamento is not null AND t.valorPago IS NOT NULL AND t.criadoPor = :usuariologado");
         query.setParameter("usuariologado", getNome() + getSenha());
         return query.getResultList();
@@ -142,7 +132,6 @@ public class TitulosDaoImp implements TitulosDao {
 
     public List<Titulo> valores_Saida() {
         EntityManager em = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
-        List<Usuario> usuariologado = usuarioLogado(getNome(), getSenha());
         Query query = em.createQuery("select t.valorPago from Titulo as t where t.tipo = 1 and t.datadoPagamento is not null AND t.valorPago IS NOT NULL AND t.criadoPor = :usuariologado");
         query.setParameter("usuariologado", getNome() + getSenha());
         return query.getResultList();
@@ -194,7 +183,6 @@ public class TitulosDaoImp implements TitulosDao {
 
     public List<Date> meses() throws Exception {
         EntityManager em = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
-        List<Usuario> usuariologado = usuarioLogado(getNome(), getSenha());
         Query query = em.createQuery("select t.datadeEmissao from Titulo as t "
                 + "WHERE t.valor >= 700 AND t.criadoPor = :usuariologado");
         query.setParameter("usuariologado", getNome() + getSenha());
@@ -223,7 +211,6 @@ public class TitulosDaoImp implements TitulosDao {
 
     public List<Titulo> graficoDeDespessas() {
         EntityManager em = PersistenceManager.getInstance().getEntityManagerFactory().createEntityManager();
-        List<Usuario> usuariologado = usuarioLogado(getNome(), getSenha());
         Query query = em.createQuery("select t from Titulo as t where t.criadoPor = :usuariologado group by t.entidadeId");
         query.setParameter("usuariologado", getNome() + getSenha());
         return query.getResultList();
