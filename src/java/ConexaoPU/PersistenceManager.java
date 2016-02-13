@@ -50,7 +50,7 @@ public class PersistenceManager {
     public HashMap<String, Object> configProperty() {        
         Map<String, Object> prop = new HashMap<>();
         prop.put("javax.persistence.jdbc.user", "root");
-        prop.put("javax.persistence.jdbc.password", "skyline@123");        
+        prop.put("javax.persistence.jdbc.password", "senha");        
         return (HashMap<String, Object>) prop;
     }
 }
